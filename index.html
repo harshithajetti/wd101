@@ -51,9 +51,10 @@
                             <label for="dob" class="text-md w-40 inline-block font-medium leading-5 text-gray-700">
                                 Date of Birth
                             </label>
-                            <input required type="date" id="dob" name="dob"
+                            <input required type="date" id="dob" name="dob" min="" max="" onchange="validateDOB()"
                                 class="bg-gray-100 inline-block rounded-lg shadow-md px-4 py-3 mb-5 text-base leading-6 placeholder-gray-500"
                                 placeholder="Enter Date of birth"></br>
+                            
                             <input type="checkbox" id="acceptTerms" name="acceptTerms"
                             class="bg-gray-100 inline-block rounded-lg shadow-md px-4 py-3 mb-5  text-base leading-6">
                             <label for="acceptTerms" class="text-md w-50 inline-block font-medium leading-5 text-gray-700 placeholder-gray-500">
@@ -86,32 +87,27 @@
             }else{
                 element.setCustomValidity('');
             }
-        } */
+        } 
+        const today = new Date();
+        const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+        const minDate = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
+
+        // Set the min and max attributes of the date input field
+        document.getElementById('dob').setAttribute('min', minDate.toISOString().split('T')[0]);
+        document.getElementById('dob').setAttribute('max', maxDate.toISOString().split('T')[0]);
 
         function validateDOB() {
-            const dobInput = document.getElementById('dob').value;
-            const message = document.getElementById('message');
-
-            // Convert input date to a Date object
-            const dob = new Date(dobInput);
-            const today = new Date();
-
-            // Calculate the age in years
-            const age = today.getFullYear() - dob.getFullYear();
-            const monthDiff = today.getMonth() - dob.getMonth();
-            const dayDiff = today.getDate() - dob.getDate();
-
-            // Adjust the age if the birthday hasn't occurred this year yet
-            const adjustedAge = (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) ? age - 1 : age;
-
-            // Check if the age is between 18 and 55
-            if (adjustedAge < 18 || adjustedAge > 55) {
-                message.textContent = "Your age must be between 18 and 55 years.";
-                document.getElementById('dob').value = ''; // Clear the invalid input
-            } else {
-                message.textContent = ''; // Clear any error message
+            const dobInput = document.getElementById('dob');
+            const errorMessage = document.getElementById('error-message');
+            const dob = new Date(dobInput.value);
+        
+            if (dob < minDate || dob > maxDate) {
+                errorMessage.style.display = 'block'; // Show error message
+            }else {
+                errorMessage.style.display = 'none'; // Hide error message
             }
-        }
+        }   */
+
 
     </script>
     
